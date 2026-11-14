@@ -1,8 +1,7 @@
 services:
   backend:
-   image: sachinthapak/learnncicd-image
+   image: sachinthapak/learnncicd-image:latest
    container_name: learnncicd-container
    ports:
     - "8080:8080"
-
 
