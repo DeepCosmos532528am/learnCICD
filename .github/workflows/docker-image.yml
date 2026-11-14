@@ -43,7 +43,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             sudo docker stop ec2cicd-container || true
-            docker rm ec2cicd-container || true
+            sudo docker rm ec2cicd-container || true
             sudo delete rmi ${{ secrets.DOCKERHUB_USERNAME }}/learnncicd-image:latest || true
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/learnncicd-image:latest
             sudo docker run -d --name ec2cicd-container -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/learnncicd-image:latest
