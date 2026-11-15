@@ -9,7 +9,7 @@ public class CicdController {
 
 @GetMapping("/greet")
 String greetUser(@RequestParam String name) {
-	return "Hello bro "+ name +" ! How are you???" ;
+	return "Hello bro "+ name +" ! How are you??? What is up there??" ;
 }
 
 }

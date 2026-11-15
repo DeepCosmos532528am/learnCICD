@@ -14,7 +14,7 @@ function App() {
     }
     return <>
         <button onClick={greet} style={{
-            backgroundColor: 'red',
+            backgroundColor: 'purple',
             border: "none",
             height: "fit-content",
             width: "fit-content",
