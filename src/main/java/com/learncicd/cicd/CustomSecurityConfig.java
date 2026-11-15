@@ -29,7 +29,7 @@ SecurityFilterChain customSecurityFilterChain(HttpSecurity http) {
 @Bean
 public CorsConfigurationSource corsConfigurationSource() {
 	CorsConfiguration corsConfiguration = new CorsConfiguration();
-	corsConfiguration.setAllowedOrigins(Arrays.asList("http://13.201.222.247:5173", "http://13.201.222.247:80", "http://localhost:5173", "http://13.201.222.247:80")); //The server IP is exposed openly here, never the right approach in real applications
+	corsConfiguration.setAllowedOrigins(Arrays.asList("http://13.201.222.247:5173", "http://13.201.222.247:80", "http://13.201.222.247:80")); //The server IP is exposed openly here, never the right approach in real applications
 //	As this project is primarily to focus on learning CICD flow!!! And the IP is temporary so kept open here without any env variables configuration
 	corsConfiguration.setAllowedMethods(Arrays.asList("GET"));
 	corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
