@@ -1,6 +1,6 @@
 services:
   backend:
-    image: sachinthapak/learnncicdbackend-image:latest
+    image: sachinthapak/learncicdbackend-image:latest
     container_name: sachinthapak_learncicdbackend-container
     ports:
       - "8080:8080"
