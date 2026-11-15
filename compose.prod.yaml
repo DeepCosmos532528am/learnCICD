@@ -10,7 +10,7 @@ services:
     image: sachinthapak/learncicdfrontend-image:latest
     container_name: sachinthapak_learncicdfrontend-container
     ports:
-      - "5173:5173"
+      - "5173:80"
     restart: unless-stopped
     depends_on:
       - backend
