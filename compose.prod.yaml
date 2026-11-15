@@ -1,14 +1,14 @@
 services:
   backend:
     image: sachinthapak/learnncicdbackend-image:latest
-    container_name: sachinthapak/learnncicdbackend-container
+    container_name: sachinthapak_learnncicdbackend-container
     ports:
       - "8080:8080"
     restart: unless-stopped
 
   frontend:
     image: sachinthapak/learncicdfrontend-image:latest
-    container_name: sachinthapak/learncicdfrontend-container
+    container_name: sachinthapak_learncicdfrontend-container
     ports:
       - "5173:5173"
     restart: unless-stopped
