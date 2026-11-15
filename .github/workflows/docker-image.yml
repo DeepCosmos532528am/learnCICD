@@ -56,7 +56,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "docker-compose.yml"
+          source: "docker-compose.prod.yml"
           target: "~/deployment/"
 
       # 10. Deploy to EC2
@@ -71,10 +71,9 @@ jobs:
 #            sudo docker stop ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdfrontend-container || true
 #            sudo docker rm ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-container || true
 #            sudo docker rm ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdfrontend-container || true
-#            sudo delete rmi ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-image:latest || true
-#            sudo delete rmi ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdfrontend-image:latest || true
+#            sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-image:latest || true
+#            sudo docker rmi ${{ secrets.DOCKERHUB_USERgiNAME }}/learnncicdfrontend-image:latest || true
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-image:latest
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdfrontend-image:latest
 #            sudo docker run -d --name ec2cicd-container -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/learnncicd-image:latest
              sudo docker compose -f docker-compose.prod.yml up -d
-          restart: unless-stopped

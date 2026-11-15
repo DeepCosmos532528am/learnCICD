@@ -4,11 +4,13 @@ services:
     container_name: local-learnncicdbackend-container
     ports:
       - "8080:8080"
+    restart: unless-stopped
 
   frontend:
     build: ./frontend/cicdFrontend
     container_name: local-learncicdfrontend-container
     ports:
       - "5173:80"
+    restart: unless-stopped
     depends_on:
       - backend
