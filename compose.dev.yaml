@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: .
+    container_name: local-learnncicdbackend-container
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend/cicdFrontend
+    container_name: local-learncicdfrontend-container
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend

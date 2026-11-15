@@ -1,0 +1,14 @@
+services:
+  backend:
+    image: sachinthapak/learnncicdbackend-image:latest
+    container_name: sachinthapak/learnncicdbackend-container
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: sachinthapak/learncicdfrontend-image:latest
+    container_name: sachinthapak/learncicdfrontend-container
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend

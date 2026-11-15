@@ -5,36 +5,61 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout Repository
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # 2. Setup Java
       - name: Setup Java
         uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '21'
 
-      - name: Build Jar
+      # 3. Build Backend JAR
+      - name: Build Backend
         run: |
           chmod +x ./mvnw
           ./mvnw clean package -DskipTests
 
-      - name: Login to Docker Hub
+      # 4. Login to Docker Hub
+      - name: Docker Hub Login
         uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/learnncicd-image:latest .
+      # 5. Build Backend Docker Image
+      - name: Build Backend Docker Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-image:latest .
 
-      - name: Push Image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/learnncicd-image:latest
+      # 6. Build Frontend Docker Image
+      - name: Build Frontend Docker Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/learncicdfrontend-image:latest ./frontend/cicdFrontend
 
+      # 7. Push Backend Docker Image
+      - name: Push Backend Image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-image:latest
+
+      # 8. Push Frontend Docker Image
+      - name: Push Frontend Image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdfrontend-image:latest
+
+      # 9. Copy Docker Compose To EC2
+      - name: Copy Docker Compose to EC2
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "docker-compose.yml"
+          target: "~/deployment/"
+
+      # 10. Deploy to EC2
       - name: SSH and deploy to EC2
         uses: appleboy/ssh-action@v1
         with:
@@ -42,8 +67,14 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            sudo docker stop ec2cicd-container || true
-            sudo docker rm ec2cicd-container || true
-            sudo delete rmi ${{ secrets.DOCKERHUB_USERNAME }}/learnncicd-image:latest || true
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/learnncicd-image:latest
-            sudo docker run -d --name ec2cicd-container -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/learnncicd-image:latest
+#            sudo docker stop ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-container || true
+#            sudo docker stop ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdfrontend-container || true
+#            sudo docker rm ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-container || true
+#            sudo docker rm ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdfrontend-container || true
+#            sudo delete rmi ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-image:latest || true
+#            sudo delete rmi ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdfrontend-image:latest || true
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-image:latest
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdfrontend-image:latest
+#            sudo docker run -d --name ec2cicd-container -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/learnncicd-image:latest
+             sudo docker compose -f docker-compose.prod.yml up -d
+          restart: unless-stopped
