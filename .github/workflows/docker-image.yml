@@ -35,7 +35,7 @@ jobs:
 
       # 5. Build Backend Docker Image
       - name: Build Backend Docker Image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-image:latest .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/learncicdbackend-image:latest .
 
       # 6. Build Frontend Docker Image
       - name: Build Frontend Docker Image
@@ -43,11 +43,11 @@ jobs:
 
       # 7. Push Backend Docker Image
       - name: Push Backend Image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdbackend-image:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/learncicdbackend-image:latest
 
       # 8. Push Frontend Docker Image
       - name: Push Frontend Image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/learnncicdfrontend-image:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/learncicdfrontend-image:latest
 
       # 9. Copy Docker Compose To EC2
       - name: Copy Docker Compose to EC2
